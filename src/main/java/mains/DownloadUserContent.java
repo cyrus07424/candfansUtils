@@ -63,14 +63,6 @@ public class DownloadUserContent {
 							// ユーザー画面を表示
 							page.navigate(String.format("https://candfans.jp/%s", username), navigateOptions);
 
-							for (int i = 0; i < 100; i++) {
-								// FIXME 画面下までスクロール
-								page.mouse().wheel(0, 10000);
-
-								// ウエイト							
-								page.waitForTimeout(500);
-							}
-
 							// 全てのプロフィール画像に対して実行
 							for (Locator image : page.locator(".user-profile-images .image")
 									.all()) {
@@ -82,8 +74,15 @@ public class DownloadUserContent {
 								FileHelper.saveContent(username, src);
 							}
 
+							// 投稿タブをクリック
+							page.locator(".change-style-tab .tab:nth-child(1)").click();
+
+							// タイムラインを読み込み
+							loadTimeline(page);
+
 							// 全てのサムネイル画像に対して実行
-							for (Locator image : page.locator("[data-testid='content-post'] .content-images .image")
+							for (Locator image : page.locator(
+									"section.creator-contents > [data-testid='content-post'] .content-images .image")
 									.all()) {
 								// サムネイル画像のURLを取得
 								String src = image.getAttribute("data-src");
@@ -92,12 +91,45 @@ public class DownloadUserContent {
 								// 保存
 								FileHelper.saveContent(username, src);
 							}
+
+							// 単品販売タブをクリック
+							page.locator(".change-style-tab .tab:nth-child(2)").click();
+
+							// タイムラインを読み込み
+							loadTimeline(page);
+
+							// 全てのサムネイル画像に対して実行
+							for (Locator image : page
+									.locator("section.creator-contents > div.creator-contents .content-images .image")
+									.all()) { // サムネイル画像のURLを取得
+								String src = image.getAttribute("data-src");
+								System.out.println(src);
+
+								// 保存
+								FileHelper.saveContent(username, src);
+							}
+
 						}
 					}
 				}
 			}
 		} finally {
 			System.out.println("■done.");
+		}
+	}
+
+	/**
+	 * タイムラインを読み込み.
+	 * @param page
+	 */
+	private static void loadTimeline(Page page) {
+		// FIXME
+		for (int i = 0; i < 100; i++) {
+			// FIXME 画面下までスクロール
+			page.mouse().wheel(0, 10000);
+
+			// ウエイト							
+			page.waitForTimeout(500);
 		}
 	}
 }
