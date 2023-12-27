@@ -82,10 +82,10 @@ public class DownloadUserContent {
 
 							// 全てのサムネイル画像に対して実行
 							for (Locator image : page.locator(
-									"section.creator-contents > [data-testid='content-post'] .content-images .image")
+									"section.creator-contents > [data-testid='content-post'] .content-images .thumbnail-img img")
 									.all()) {
 								// サムネイル画像のURLを取得
-								String src = image.getAttribute("data-src");
+								String src = image.getAttribute("src");
 								System.out.println(src);
 
 								// 保存
@@ -100,9 +100,9 @@ public class DownloadUserContent {
 
 							// 全てのサムネイル画像に対して実行
 							for (Locator image : page
-									.locator("section.creator-contents > div.creator-contents .content-images .image")
+									.locator("section.creator-contents > div.creator-contents .content-images .thumbnail-img img")
 									.all()) { // サムネイル画像のURLを取得
-								String src = image.getAttribute("data-src");
+								String src = image.getAttribute("src");
 								System.out.println(src);
 
 								// 保存
@@ -123,13 +123,17 @@ public class DownloadUserContent {
 	 * @param page
 	 */
 	private static void loadTimeline(Page page) {
+		System.out.print("loading");
 		// FIXME
 		for (int i = 0; i < 100; i++) {
+			System.out.print(".");
+
 			// FIXME 画面下までスクロール
 			page.mouse().wheel(0, 10000);
 
 			// ウエイト							
 			page.waitForTimeout(500);
 		}
+		System.out.println();
 	}
 }
