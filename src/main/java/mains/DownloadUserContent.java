@@ -63,6 +63,15 @@ public class DownloadUserContent {
 							// ユーザー画面を表示
 							page.navigate(String.format("https://candfans.jp/%s", username), navigateOptions);
 
+							try {
+								// はいをクリック
+								page.locator(
+										"#__next > div > div > section > div > section > div > div > button.inline-flex:nth-child(1)")
+										.click();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+
 							// 全てのプロフィール画像に対して実行
 							for (Locator image : page.locator(".user-profile-images .image")
 									.all()) {
@@ -74,16 +83,18 @@ public class DownloadUserContent {
 								FileHelper.saveContent(username, src);
 							}
 
-							// 投稿タブをクリック
-							page.locator(".change-style-tab .tab:nth-child(1)").click();
+							try {
+								// FIXME 投稿タブをクリック
+								page.locator(".change-style-tab .tab:nth-child(1)").click();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 
 							// タイムラインを読み込み
 							loadTimeline(page);
 
 							// 全てのサムネイル画像に対して実行
-							for (Locator image : page.locator(
-									"section.creator-contents > [data-testid='content-post'] .content-images .thumbnail-img img")
-									.all()) {
+							for (Locator image : page.locator("#scrollableDiv div.grid img").all()) {
 								// サムネイル画像のURLを取得
 								String src = image.getAttribute("src");
 								System.out.println(src);
@@ -92,15 +103,20 @@ public class DownloadUserContent {
 								FileHelper.saveContent(username, src);
 							}
 
-							// 単品販売タブをクリック
-							page.locator(".change-style-tab .tab:nth-child(2)").click();
+							try {
+								// FIXME 単品販売タブをクリック
+								page.locator(".change-style-tab .tab:nth-child(2)").click();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 
 							// タイムラインを読み込み
 							loadTimeline(page);
 
 							// 全てのサムネイル画像に対して実行
 							for (Locator image : page
-									.locator("section.creator-contents > div.creator-contents .content-images .thumbnail-img img")
+									.locator(
+											"section.creator-contents > div.creator-contents .content-images .thumbnail-img img")
 									.all()) { // サムネイル画像のURLを取得
 								String src = image.getAttribute("src");
 								System.out.println(src);
@@ -108,7 +124,6 @@ public class DownloadUserContent {
 								// 保存
 								FileHelper.saveContent(username, src);
 							}
-
 						}
 					}
 				}

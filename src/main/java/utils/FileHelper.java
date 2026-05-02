@@ -27,6 +27,9 @@ public class FileHelper {
 	 */
 	public static void saveContent(String prefix, String urlString) {
 		try {
+			// FIXME サイズ指定を削除
+			urlString = urlString.replaceAll("/size=\\d+$", "");
+
 			// 接続
 			URL url = new URL(urlString);
 			URLConnection urlConnection = url.openConnection();
@@ -43,6 +46,10 @@ public class FileHelper {
 			}
 			if (Configurations.DEBUG_MODE) {
 				System.out.println("fileName: " + fileName);
+			}
+			// FIXME
+			if (FilenameUtils.getExtension(fileName).isEmpty()) {
+				fileName = FilenameUtils.getBaseName(fileName) + ".jpg";
 			}
 			File destinationFile = new File(String.format("./downloads/%s/%s", prefix, fileName));
 			if (!destinationFile.exists()) {
